@@ -10,7 +10,16 @@ function MoviesTable({ searching }: MoviesTableProps) {
 
   const filteredMovies = useMemo(() => {
     return movies.filter((movie) =>
-      movie.name.toLowerCase().includes(searching.toLowerCase())
+      movie.name
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .replace(/\s+/g, '')
+      .includes(searching
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .replace(/\s+/g, ''))
     );
   }, [searching]);
 
